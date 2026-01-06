@@ -3,22 +3,24 @@
 // ============================================
 const scenes = {
     room1: {
-        name: 'Room 1',
+        name: '房間1',
         image: 'images/Room1.png',
         // 把熱點放在正前方，容易看到
         hotspot: {
             targetScene: 'room2',
-            position: { x: 0, y: 0, z: 300 },  // 正前方
-            label: '→ Room 2'
+            position: { x: -200, y: 25, z: -35 },  // 正前方
+            label: '房間2',
+            size: 30  // 👈 新增大小參數
         }
     },
     room2: {
-        name: 'Room 2',
+        name: '房間2',
         image: 'images/Room2.png',
         hotspot: {
             targetScene: 'room1',
-            position: { x: 0, y: 0, z: 300 },  // 正前方
-            label: '← Room 1'
+            position: { x: -200, y: 5, z: -10 },  // 正前方
+            label: '房間1',
+            size: 1  //
         }
     }
 };
@@ -127,17 +129,35 @@ function loadScene(sceneId) {
 }
 
 function createHotspot(hotspotData) {
-    // 創建一個較大的發光球體
-    const hotspotGeometry = new THREE.SphereGeometry(30, 32, 32);
-    const hotspotMaterial = new THREE.MeshBasicMaterial({
-        color: 0x00FF00,  // 亮綠色
+    // 創建 Canvas 來繪製文字
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = 512;
+    canvas.height = 256;
+
+    // 設置文字樣式
+    // context.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    // context.fillRect(0, 0, canvas.width, canvas.height);
+    
+    context.font = 'bold 60px Arial';
+    context.fillStyle = '#00FF00';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(hotspotData.label, canvas.width / 2, canvas.height / 2);
+
+    // 創建紋理
+    const texture = new THREE.CanvasTexture(canvas);
+    
+    // 創建平面來顯示文字
+    const geometry = new THREE.PlaneGeometry(80, 40);
+    const material = new THREE.MeshBasicMaterial({
+        map: texture,
         transparent: true,
-        opacity: 0.7,
-        emissive: 0x00FF00,  // 發光效果
-        emissiveIntensity: 0.5
+        opacity: 0.9,
+        side: THREE.DoubleSide
     });
     
-    currentHotspot = new THREE.Mesh(hotspotGeometry, hotspotMaterial);
+    currentHotspot = new THREE.Mesh(geometry, material);
     currentHotspot.position.set(
         hotspotData.position.x,
         hotspotData.position.y,
@@ -147,6 +167,8 @@ function createHotspot(hotspotData) {
         targetScene: hotspotData.targetScene,
         label: hotspotData.label
     };
+    
+    // 讓文字始終面向攝影機
     scene.add(currentHotspot);
 
     // 更新狀態顯示
@@ -158,12 +180,12 @@ function createHotspot(hotspotData) {
 
 function animateHotspot() {
     if (currentHotspot) {
-        // 脈動效果
-        const scale = 1 + Math.sin(Date.now() * 0.003) * 0.3;
-        currentHotspot.scale.set(scale, scale, scale);
+        // 讓文字始終面向攝影機
+        currentHotspot.lookAt(camera.position);
         
-        // 旋轉效果
-        currentHotspot.rotation.y += 0.01;
+        // 脈動效果（可選）
+        // const scale = 1 + Math.sin(Date.now() * 0.003) * 0.1;
+        // currentHotspot.scale.set(scale, scale, 1);
     }
 }
 
