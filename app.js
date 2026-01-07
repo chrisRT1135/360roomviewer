@@ -2,6 +2,17 @@
 // 場景配置
 // ============================================
 const scenes = {
+    room0: {
+        name: '大廳',
+        image: 'images/Room0.png',
+        // 把熱點放在正前方，容易看到
+        hotspot: {
+            targetScene: 'room1',
+            position: { x: -200, y: 0, z: -80 },  // 正前方
+            label: '房間1',
+            size: 30  // 👈 新增大小參數
+        }
+    },
     room1: {
         name: '房間1',
         image: 'images/Room1.png',
@@ -56,7 +67,7 @@ function init() {
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
 
-    loadScene('room1');
+    loadScene('room0');
 
     document.addEventListener('pointerdown', onPointerDown);
     document.addEventListener('pointermove', onPointerMove);
@@ -67,7 +78,7 @@ function init() {
 
     document.getElementById('switchRoomBtn').addEventListener('click', switchRoom);
     document.getElementById('autoRotateBtn').addEventListener('click', toggleAutoRotate);
-    document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
+    document.getElementById('fullscreenBtn').addEventListener('click', toggleReturnLobby);
 }
 
 function loadScene(sceneId) {
@@ -253,6 +264,10 @@ function toggleFullscreen() {
     } else {
         document.exitFullscreen();
     }
+}
+
+function toggleReturnLobby() {
+    loadScene('room0');
 }
 
 function animate() {
