@@ -7,9 +7,9 @@ const scenes = {
         image: 'images/Room0.png',
         // 把熱點放在正前方，容易看到
         hotspot: {
-            targetScene: 'room1',
-            position: { x: -200, y: 0, z: -80 },  // 正前方
-            label: '房間1',
+            targetScene: 'room3',
+            position: { x: -200, y: -20, z: 0 },  // 正前方
+            label: '梯廳',
             size: 30  // 👈 新增大小參數
         }
     },
@@ -29,11 +29,22 @@ const scenes = {
         image: 'images/Room2.png',
         hotspot: {
             targetScene: 'room1',
-            position: { x: -200, y: 5, z: -10 },  // 正前方
+            position: { x: 0, y: 5, z: -10 },  // 正前方
             label: '房間1',
             size: 1  //
         }
-    }
+    },
+    room3: {
+        name: '梯廳',
+        image: 'images/Room3.png',
+        // 把熱點放在正前方，容易看到
+        hotspot: {
+            targetScene: 'room1',
+             position: { x: -100, y: -20, z: -250 },  // 正前方
+            label: '房間1',
+            size: 30  // 👈 新增大小參數
+        }
+    },
 };
 
 // ============================================
