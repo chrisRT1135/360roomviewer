@@ -29,7 +29,7 @@ const scenes = {
         image: 'images/Room2.png',
         hotspot: {
             targetScene: 'room1',
-            position: { x: 0, y: 5, z: -10 },  // 正前方
+            position: { x: -200, y: 5, z: -10 },  // 正前方
             label: '房間1',
             size: 1  //
         }
