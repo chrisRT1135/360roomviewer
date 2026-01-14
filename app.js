@@ -4,7 +4,7 @@
 const scenes = {
     lobby: {
         name: '大廳',
-        image: 'images/lobby.png',
+        image: 'images/lobby1.png',
         initialView: { lon: 180, lat: 0 },
         hotspots: [  
             {
